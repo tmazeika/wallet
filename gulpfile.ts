@@ -3,6 +3,7 @@ import gulp from 'gulp';
 import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
 import util from 'gulp-util';
+import rename from 'gulp-rename';
 
 const cleanCSS = require('gulp-clean-css');
 
@@ -28,4 +29,10 @@ export function clean() {
     ]);
 }
 
-export default gulp.series(clean, styles);
+export function env() {
+    return gulp.src('.env.example')
+        .pipe(rename('.env'))
+        .pipe(gulp.dest('.', {overwrite: false}));
+}
+
+export default gulp.parallel(env, gulp.series(clean, styles));
